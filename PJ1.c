@@ -96,27 +96,21 @@ int verifica_igualdade(int vetor[], int vetor_buscado[]){
 int procura_sequencia(TipoLista Lista, TipoApontador Aux){
     int i = 0;
     int vet_temp[5];
-//    printf("\n\nProcurando a sequencia: \n\n");
-    //TipoApontador Aux;
-    //Aux = Lista.Primeiro -> Prox;
+
     while (i < QT_ELEMENTOS_BUSCADOS && Aux != NULL){
-//        printf("%d\n", Aux -> Item.Chave);
         vet_temp[i] = Aux -> Item.Chave;
         Aux = Aux -> Prox;
         i++;
     }
-//    printf("\n\n--------------\n\n");
     int a = verifica_igualdade(vet_temp, SEQUENCIA_BUSCADA);
     return a;
 }
 
 
 int percorre_lista(TipoLista Lista){
-//    printf("\n\nPercorrendo a sequencia: \n\n");
     TipoApontador Aux;
     Aux = Lista.Primeiro -> Prox;
     while (Aux != NULL){
-//        printf("%d\n", Aux -> Item.Chave);
         if (procura_sequencia(Lista, Aux) == 1){
             return 1;
         }
@@ -134,24 +128,20 @@ void reduz_lista(TipoLista Lista, TipoLista Lista_Reduzida, int q){
     item_redux.Chave = Aux -> Item.Chave;
     Insere(item_redux, &Lista_Reduzida);
 
+
     int a = item_redux.Chave;
     int b = Aux -> Item.Chave;
+
     /*Insere cada chave na lista */
     for (int i = 0; i < q-1; i++){
         Aux = Aux -> Prox;
         b = Aux -> Item.Chave;
-//        printf("%d \n", b);
         if (a != b){
             item_redux.Chave = Aux -> Item.Chave;
             Insere(item_redux, &Lista_Reduzida);
-//            printf("Inseriu: %d \n", item_redux.Chave);
             a = item_redux.Chave;
         }
-//        else{
-//            printf("Else \n");
-//        }
     }
-//    printf("\n\n\n\n\n");
 }
 
 /* ====================== Fim das Minhas funções ============================ */
@@ -172,35 +162,27 @@ int main(){
 
 
 
-    /// Lê o arquivo com as entradas e armazena os valores
-    int numero;
-    int q = 0;
-    int *ptr = (int *) realloc(NULL, 0 * sizeof(int));
-    while(!feof(arquivo)){
-        fscanf(arquivo, "%d", &numero);
-        q++;
-        ptr = (int *) realloc(ptr, q * sizeof(int));
-        ptr[q-1] = numero;
-    }
-
-//    imprime_vetor(ptr, q);
-
+    /// Lê o arquivo com as entradas e armazena os valores na lista
 
     TipoLista lista;
     TipoItem item;
-//    TipoApontador p;
-//    int i, j, k, n;
-    int i;
+
+    /*Inicia a lista, vazia */
     FLVazia(&lista);
 
 
-    /*Insere cada chave na lista */
-    for (i = 0; i < q; i++){
-        item.Chave = ptr[i];
+    int numero;
+    int q = 0;
+    while(!feof(arquivo)){
+        fscanf(arquivo, "%d", &numero);
+        q++;
+        /*Insere cada chave na lista */
+        item.Chave = numero;
         Insere(item, &lista);
-//        printf("Inseriu: %d \n", item.Chave);
     }
-//    Imprime(lista);
+
+    /// Cria uma versão reduzida da lista anterior, na qual são
+    /// excluídos os valores contíguos repetidos
 
     TipoLista lista_reduzida;
     FLVazia(&lista_reduzida);
@@ -216,9 +198,9 @@ int main(){
     }
 
 
-
-
     /// Liberar a memória
+
+    //TODO
 
     return 0;
 }
