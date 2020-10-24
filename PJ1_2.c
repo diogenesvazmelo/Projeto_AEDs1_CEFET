@@ -71,7 +71,7 @@ void Imprime(TipoLista Lista)
 /* ====================== Fim da Implementação Ziviani ====================== */
 
 
-int SEQUENCIA_BUSCADA[] = {1, 3, 2, 3, 1};
+int SEQUENCIA_BUSCADA[] = {0, 255, 128, 255, 0};
 int QT_ELEMENTOS_BUSCADOS = 5;
 
 /* ====================== Minhas funções ==================================== */
@@ -84,9 +84,9 @@ void imprime_vetor(int *ptr, int tamanho){
     printf("\n\n");
 }
 
-int verifica_igualdade(int vetor[]){
+int verifica_igualdade(int vetor[], int vetor_buscado[]){
     for (int i = 0; i < 5; i++){
-        if (vetor[i] != SEQUENCIA_BUSCADA[i]){
+        if (vetor[i] != vetor_buscado[i]){
             return 0;
         }
     }
@@ -106,13 +106,12 @@ int procura_sequencia(TipoLista Lista, TipoApontador Aux){
         i++;
     }
 //    printf("\n\n--------------\n\n");
-    int a = verifica_igualdade(vet_temp);
+    int a = verifica_igualdade(vet_temp, SEQUENCIA_BUSCADA);
     return a;
 }
 
 
-int percorre_lista(TipoLista Lista)
-{
+int percorre_lista(TipoLista Lista){
 //    printf("\n\nPercorrendo a sequencia: \n\n");
     TipoApontador Aux;
     Aux = Lista.Primeiro -> Prox;
@@ -126,13 +125,42 @@ int percorre_lista(TipoLista Lista)
     return 0;
 }
 
+void reduz_lista(TipoLista Lista, TipoLista Lista_Reduzida, int q){
+    TipoItem item_redux;
+
+    TipoApontador Aux;
+    Aux = Lista.Primeiro -> Prox;
+
+    item_redux.Chave = Aux -> Item.Chave;
+    Insere(item_redux, &Lista_Reduzida);
+
+    int a = item_redux.Chave;
+    int b = Aux -> Item.Chave;
+    /*Insere cada chave na lista */
+    for (int i = 0; i < q-1; i++){
+        Aux = Aux -> Prox;
+        b = Aux -> Item.Chave;
+        printf("%d \n", b);
+        if (a != b){
+            item_redux.Chave = Aux -> Item.Chave;
+            Insere(item_redux, &Lista_Reduzida);
+            printf("Inseriu: %d \n", item_redux.Chave);
+            a = item_redux.Chave;
+        }
+        else{
+            printf("Else \n");
+        }
+    }
+    printf("\n\n\n\n\n");
+}
+
 /* ====================== Fim das Minhas funções ============================ */
 
 int main(){
 	printf("Digite o nome do arquivo: ");
-	char nome_do_arquivo[1000];
-	scanf("%s", &nome_do_arquivo[0]);
-//    char *nome_do_arquivo = "teste.txt";
+//	char nome_do_arquivo[1000];
+//	scanf("%s", &nome_do_arquivo[0]);
+    char *nome_do_arquivo = "teste.txt";
 
     /// Abre o arquivo e verifica se foi ok
 	FILE *arquivo;
@@ -155,7 +183,7 @@ int main(){
         ptr[q-1] = numero;
     }
 
-    //imprime_vetor(ptr, q);
+    imprime_vetor(ptr, q);
 
 
     TipoLista lista;
@@ -171,10 +199,17 @@ int main(){
     for (i = 0; i < q; i++){
         item.Chave = ptr[i];
         Insere(item, &lista);
-        tamanho++;
+        //tamanho++;
 //        printf("Inseriu: %d \n", item.Chave);
     }
 //    Imprime(lista);
+
+    TipoLista lista_reduzida;
+    FLVazia(&lista_reduzida);
+    reduz_lista(lista, lista_reduzida, q);
+    Imprime(lista_reduzida);
+
+
     if (percorre_lista(lista) == 1){
         printf("Resultado: Padrao encontrado.");
     }
