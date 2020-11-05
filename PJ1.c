@@ -152,7 +152,7 @@ double p_medio(TipoLista Lista){
     Aux = Lista.Primeiro -> Prox;
 
     int num;
-    int contador = -1;
+    int contador = -2;
 
     int save[2] = {-1, -1};
     int save2[5] = {-1, -1, -1, -1, -1};
@@ -168,14 +168,14 @@ double p_medio(TipoLista Lista){
                 return (save[0] + save[1])/2;
             }
             else{
-                save[1] = contador;
+                //save[1] = contador;
             }
         }
 
         if (save2[0] == 0 && save2[1] == 255 && save2[2] == 128 && save2[3] == 255){
 //            printf("\nNivel 5 (entrou) - num: %d", num);
             if (num == 0){
-                save[1] = contador;
+                //save[1] = contador;
                 save2[4] = 0;
                 //return posicao_buscada;
             }
@@ -201,6 +201,7 @@ double p_medio(TipoLista Lista){
 //                printf("\nsave2[4] - %d\n\n", save2[4]);
             }
             else if (num == 128){
+                save[1] = contador;
             }
             else{
                 save2[0] = -1;
@@ -213,6 +214,7 @@ double p_medio(TipoLista Lista){
             if (num == 128){
 //                printf("\nNivel 3 - %d", num);
                 save2[2] = num;
+                save[0] = contador;
             }
             else if (num == 255){
             }
@@ -238,7 +240,6 @@ double p_medio(TipoLista Lista){
             //save[0] = contador;
 //            printf("\nNivel 1 - %d", num);
             save2[0] = num;
-            save[0] = contador;
             //menor_contador_possivel = contador + 1;
         }
         else{
@@ -313,8 +314,8 @@ int main(){
         double ponto_medio = p_medio(lista);
         printf("\nPonto Medio: %0.lf", ponto_medio);
 
-        printf("\n\n\n");
-        Imprime(lista);
+        //printf("\n\n\n");
+        //Imprime(lista);
     }
 
 
