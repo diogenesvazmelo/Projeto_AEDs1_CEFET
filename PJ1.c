@@ -62,7 +62,7 @@ void Imprime(TipoLista Lista)
 { TipoApontador Aux;
   Aux = Lista.Primeiro -> Prox;
   while (Aux != NULL)
-    { printf("%d\n", Aux -> Item.Chave);
+    { printf("%d ", Aux -> Item.Chave);
       Aux = Aux -> Prox;
     }
 }
@@ -144,6 +144,115 @@ void reduz_lista(TipoLista Lista, TipoLista Lista_Reduzida, int q){
     }
 }
 
+/* ====================== Minhas funções parte 2 ============================ */
+
+double p_medio(TipoLista Lista){
+
+    TipoApontador Aux;
+    Aux = Lista.Primeiro -> Prox;
+
+    int num;
+    int contador = -1;
+
+    int save[2] = {-1, -1};
+    int save2[5] = {-1, -1, -1, -1, -1};
+
+    while (Aux != NULL){
+        contador++;
+        num =  Aux -> Item.Chave;
+
+
+        if (save2[0] == 0 && save2[1] == 255 && save2[2] == 128 && save2[3] == 255 && save2[4] == 0){
+//            printf("\nNivel 5 (entrou) - num: %d", num);
+            if (num != 0){
+                return (save[0] + save[1])/2;
+            }
+            else{
+                save[1] = contador;
+            }
+        }
+
+        if (save2[0] == 0 && save2[1] == 255 && save2[2] == 128 && save2[3] == 255){
+//            printf("\nNivel 5 (entrou) - num: %d", num);
+            if (num == 0){
+                save[1] = contador;
+                save2[4] = 0;
+                //return posicao_buscada;
+            }
+            else if (num == 255){
+            }
+            else{
+                save2[0] = -1;
+                save2[1] = -1;
+                save2[2] = -1;
+                save2[3] = -1;
+            }
+        }
+
+        else if (save2[0] == 0 && save2[1] == 255 && save2[2] == 128){
+            if (num == 255){
+//                printf("\nNivel 4 - %d", num);
+                save2[3] = num;
+
+//                printf("\n\nsave2[0] - %d", save2[0]);
+//                printf("\nsave2[1] - %d", save2[1]);
+//                printf("\nsave2[2] - %d", save2[2]);
+//                printf("\nsave2[3] - %d", save2[3]);
+//                printf("\nsave2[4] - %d\n\n", save2[4]);
+            }
+            else if (num == 128){
+            }
+            else{
+                save2[0] = -1;
+                save2[1] = -1;
+                save2[2] = -1;
+            }
+        }
+
+        else if (save2[0] == 0 && save2[1] == 255){
+            if (num == 128){
+//                printf("\nNivel 3 - %d", num);
+                save2[2] = num;
+            }
+            else if (num == 255){
+            }
+            else{
+                save2[0] = -1;
+                save2[1] = -1;
+            }
+        }
+
+        else if (save2[0] == 0){
+            if (num == 255){
+//                printf("\nNivel 2 - %d", num);
+                save2[1] = num;
+            }
+            else if (num == 0){
+            }
+            else{
+                save2[0] = -1;
+            }
+        }
+
+        else if (num == 0){
+            //save[0] = contador;
+//            printf("\nNivel 1 - %d", num);
+            save2[0] = num;
+            save[0] = contador;
+            //menor_contador_possivel = contador + 1;
+        }
+        else{
+            save2[0] = -1;
+        }
+
+        Aux = Aux -> Prox;
+    }
+    return (save[0] + save[1])/2;
+}
+
+
+
+
 /* ====================== Fim das Minhas funções ============================ */
 
 int main(){
@@ -189,12 +298,23 @@ int main(){
     reduz_lista(lista, lista_reduzida, q);
 //    Imprime(lista_reduzida);
 
-
+    bool se_encontrado = false;
     if (percorre_lista(lista_reduzida) == 1){
         printf("Resultado: Padrao encontrado.");
+        se_encontrado = true;
     }
     else{
         printf("Resultado: Padrao nao encontrado.");
+    }
+
+
+    /// Se o padrão for encontrado
+    if (se_encontrado == true){
+        double ponto_medio = p_medio(lista);
+        printf("\nPonto Medio: %0.lf", ponto_medio);
+
+        printf("\n\n\n");
+        Imprime(lista);
     }
 
 
