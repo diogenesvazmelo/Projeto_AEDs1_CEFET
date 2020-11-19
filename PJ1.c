@@ -272,50 +272,88 @@ int main(){
 
 
 
-    /// Lê o arquivo com as entradas e armazena os valores na lista
-
-    TipoLista lista;
-    TipoItem item;
-
-    /*Inicia a lista, vazia */
-    FLVazia(&lista);
-
-
-    int numero;
-    int q = 0;
-    while(!feof(arquivo)){
-        fscanf(arquivo, "%d", &numero);
-        q++;
-        /*Insere cada chave na lista */
-        item.Chave = numero;
-        Insere(item, &lista);
+    int n = -1;
+    fscanf(arquivo, "%d", &n);
+    if (n <= 0){
+        return 0;
     }
 
-    /// Cria uma versão reduzida da lista anterior, na qual são
-    /// excluídos os valores contíguos repetidos
+    int n_cont = 0;
 
-    TipoLista lista_reduzida;
-    FLVazia(&lista_reduzida);
-    reduz_lista(lista, lista_reduzida, q);
-//    Imprime(lista_reduzida);
+    double vetor_pontos_medios[n];
 
-    bool se_encontrado = false;
-    if (percorre_lista(lista_reduzida) == 1){
-        printf("Resultado: Padrao encontrado.");
-        se_encontrado = true;
+    while (n_cont < n){
+
+        /// Lê o arquivo com as entradas e armazena os valores na lista
+
+        TipoLista lista;
+        TipoItem item;
+
+        /*Inicia a lista, vazia */
+        FLVazia(&lista);
+
+        int l = 0;
+        fscanf(arquivo, "%d", &l);
+
+        int numero;
+        int q = 0;
+        //while(!feof(arquivo)){
+        while(q < l){
+            fscanf(arquivo, "%d", &numero);
+            q++;
+            /*Insere cada chave na lista */
+            item.Chave = numero;
+            //printf("%d\n", numero);
+            Insere(item, &lista);
+        }
+        Imprime(lista);
+
+        /// Cria uma versão reduzida da lista anterior, na qual são
+        /// excluídos os valores contíguos repetidos
+
+        TipoLista lista_reduzida;
+        FLVazia(&lista_reduzida);
+        reduz_lista(lista, lista_reduzida, q);
+    //    Imprime(lista_reduzida);
+
+        bool se_encontrado = false;
+        if (percorre_lista(lista_reduzida) == 1){
+            printf("Resultado: Padrao encontrado.");
+            se_encontrado = true;
+        }
+        else{
+            printf("Resultado: Padrao nao encontrado.");
+        }
+
+
+        /// Se o padrão for encontrado
+        if (se_encontrado == true){
+            double ponto_medio = p_medio(lista);
+            vetor_pontos_medios[n_cont] = ponto_medio;
+            printf("\nPonto Medio: %0.lf", ponto_medio);
+            printf("\nPonto Medio: %0.lf", vetor_pontos_medios[n_cont]);
+
+            printf("\n\n\n");
+            //Imprime(lista);
+        }
+        else{
+            vetor_pontos_medios[n_cont] = -1;
+        }
+
+        /// Liberar a memória
+//        free(lista);
+//        free(item);
+//
+
+
+        n_cont++;
+
     }
-    else{
-        printf("Resultado: Padrao nao encontrado.");
-    }
 
+    printf("\n\n\n");
 
-    /// Se o padrão for encontrado
-    if (se_encontrado == true){
-        double ponto_medio = p_medio(lista);
-        printf("\nPonto Medio: %0.lf", ponto_medio);
-
-        //printf("\n\n\n");
-        //Imprime(lista);
+    for (int i = 0; i < n; i++){
+        printf("%0.lf\n", vetor_pontos_medios[i]);
     }
 
 
